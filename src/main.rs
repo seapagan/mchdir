@@ -11,7 +11,7 @@ use std::process;
     name = "mchdir",
     version = "0.1.0",
     author = "Grant Ramsay",
-    about = "Create a new folder and change into it in one command.",
+    about = "Set up the 'mcd' command to create and change directories in one step.",
     args_conflicts_with_subcommands = true,
     arg_required_else_help = true
 )]
@@ -86,7 +86,11 @@ fn print_bash_zsh_integration() {
         r#"
 # implements the 'mcd' function for changing directories
 mcd() {{
-    if [ -z "$1" ]; then
+    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+        echo "Usage: mcd <directory>"
+        echo "Creates a new directory and changes into it."
+        echo "If no directory is specified, changes to the home directory."
+    elif [ -z "$1" ]; then
         cd
     else
         mchdir_target_dir=$("mchdir" -d "$1")
@@ -97,7 +101,7 @@ mcd() {{
             echo "Failed to change directory."
         fi
     fi
-    }}
+}}
 "#
     );
 }
@@ -108,7 +112,11 @@ fn print_fish_integration() {
         r#"
 # implements the 'mcd' function for changing directories
 function mcd
-    if test (count $argv) -eq 0
+    if test "$argv[1]" = "--help" -o "$argv[1]" = "-h"
+        echo "Usage: mcd <directory>"
+        echo "Creates a new directory and changes into it."
+        echo "If no directory is specified, changes to the home directory."
+    else if test (count $argv) -eq 0
         cd
     else
         set target_dir (mchdir -d $argv)
