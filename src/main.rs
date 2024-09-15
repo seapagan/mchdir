@@ -66,10 +66,6 @@ fn main() {
                 process::exit(1);
             }
         }
-        // } else {
-        //     // No arguments provided
-        //     eprintln!("Usage: mchdir init\n       mchdir install\n       mchdir -d <folder_name>");
-        //     process::exit(1);
     }
 }
 
@@ -88,15 +84,15 @@ fn print_shell_integration() {
 fn print_bash_zsh_integration() {
     println!(
         r#"
-# Add this function to your shell configuration for integration with mchdir
+# implements the 'mcd' function for changing directories
 mcd() {{
     if [ -z "$1" ]; then
         cd
     else
-        local target_dir=$("mchdir" -d "$1")
+        mchdir_target_dir=$("mchdir" -d "$1")
 
-        if [[ $? -eq 0 ]]; then
-            cd "$target_dir"
+        if [ $? -eq 0 ]; then
+            cd "$mchdir_target_dir"
         else
             echo "Failed to change directory."
         fi
@@ -110,7 +106,7 @@ mcd() {{
 fn print_fish_integration() {
     println!(
         r#"
-# Add this function to your fish configuration for integration with mchdir
+# implements the 'mcd' function for changing directories
 function mcd
     if test (count $argv) -eq 0
         cd
@@ -139,6 +135,10 @@ fn install_shell_integration() -> io::Result<()> {
         Path::new(&home_dir).join(".zshrc")
     } else if shell.contains("bash") {
         Path::new(&home_dir).join(".bashrc")
+    } else if shell.ends_with("/sh") || shell.contains("dash") {
+        eprintln!("Automatic installation is not supported for your shell. Please add the shell integration code manually.");
+        print_shell_integration(); // Outputs the POSIX-compliant shell script
+        process::exit(1);
     } else {
         eprintln!("Unsupported shell. Only Bash, Zsh, and Fish are supported at this time.");
         process::exit(1);
