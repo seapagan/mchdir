@@ -2,9 +2,18 @@
 name = "mchdir"
 version = "0.1.0"
 edition = "2021"
+authors = ["Grant Ramsay <seapagan@gmail.com>"]
+description = "Make and enter a directory in one command."
+license = "MIT"
+# homepage = "https://seapagan.github.io/mchdir/"
+repository = "https://github.com/seapagan/mchdir"
+readme = "README.md"
+exclude = [".github/*", "docs/*"]
+keywords = ["directory", "change", "cd", "chdir", "mkdir"]
+categories = ["command-line-utilities", "filesystem"]
 
 [package.metadata]
-platforms = ["linux", "macos"]
+os = ["linux", "macos"]
 
 [dependencies]
 clap = { version = "4.5.17", features = ["derive"] }

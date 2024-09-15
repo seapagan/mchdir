@@ -84,7 +84,7 @@ cargo install mchdir
 Clone the repository:
 
 ```terminal
-git clone https://github.com/yourusername/mchdir.git
+git clone https://github.com/seapagan/mchdir.git
 cd mchdir
 ```
 
