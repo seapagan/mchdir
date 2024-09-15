@@ -90,14 +90,18 @@ fn print_bash_zsh_integration() {
         r#"
 # Add this function to your shell configuration for integration with mchdir
 mcd() {{
-    local target_dir=$("mchdir" -d "$1")
-
-    if [[ $? -eq 0 ]]; then
-        cd "$target_dir"
+    if [ -z "$1" ]; then
+        cd
     else
-        echo "Failed to change directory."
+        local target_dir=$("mchdir" -d "$1")
+
+        if [[ $? -eq 0 ]]; then
+            cd "$target_dir"
+        else
+            echo "Failed to change directory."
+        fi
     fi
-}}
+    }}
 "#
     );
 }
@@ -108,12 +112,16 @@ fn print_fish_integration() {
         r#"
 # Add this function to your fish configuration for integration with mchdir
 function mcd
-    set target_dir (mchdir -d $argv)
-
-    if test $status -eq 0
-        cd $target_dir
+    if test (count $argv) -eq 0
+        cd
     else
-        echo "Failed to change directory."
+        set target_dir (mchdir -d $argv)
+
+        if test $status -eq 0
+            cd $target_dir
+        else
+            echo "Failed to change directory."
+        end
     end
 end
 "#
