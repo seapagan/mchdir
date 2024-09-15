@@ -8,12 +8,12 @@ use std::process;
 /// A utility for managing and changing directories with shell integration.
 #[derive(Parser)]
 #[command(
-    name = "mchdir",
     version = "0.1.0",
     author = "Grant Ramsay",
     about = "Set up the 'mcd' command to create and change directories in one step.",
     args_conflicts_with_subcommands = true,
-    arg_required_else_help = true
+    arg_required_else_help = true,
+    override_usage = "mchdir [COMMAND]"
 )]
 struct Cli {
     /// Folder name to create and change into
@@ -26,7 +26,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Prints the shell integration code
+    /// Prints the shell integration code for reference
     Init,
     /// Installs the shell integration into your shell configuration
     Install,
