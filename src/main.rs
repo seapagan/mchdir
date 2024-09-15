@@ -163,18 +163,12 @@ fn install_shell_integration() -> io::Result<()> {
         .create(true)
         .open(&config_file)?;
 
+    let comment = "\n# Integrate 'mcd' to create and change folder in one command\n";
+
     if shell.contains("fish") {
-        writeln!(
-            file,
-            "\n# The following function integrates mchdir into your shell (fish)\n\
-            eval (mchdir init)"
-        )?;
+        writeln!(file, "{}eval (mchdir init)", comment)?;
     } else {
-        writeln!(
-            file,
-            "\n# Integrate 'mcd' into your shell (bash/zsh)\n\
-            eval \"$(mchdir init)\""
-        )?;
+        writeln!(file, "{}eval \"$(mchdir init)\"", comment)?;
     }
 
     println!(
