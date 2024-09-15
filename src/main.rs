@@ -32,6 +32,9 @@ enum Commands {
     Install,
 }
 
+#[cfg(not(any(target_os = "linux", target_os = "macos")))]
+compile_error!("This project is only compatible with Linux or macOS.");
+
 fn main() {
     let cli = Cli::parse();
 
