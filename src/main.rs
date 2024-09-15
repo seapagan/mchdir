@@ -17,7 +17,7 @@ use std::process;
 )]
 struct Cli {
     /// Folder name to create and change into
-    #[arg(short = 'd', long, value_name = "FOLDER_NAME", hide = true)]
+    #[arg(short = 'd', value_name = "FOLDER_NAME", hide = true)]
     folder_name: Option<String>,
 
     #[command(subcommand)]
