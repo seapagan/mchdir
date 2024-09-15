@@ -10,13 +10,13 @@ fn main() {
 
     // Check if the 'init' command is provided
     if args.len() > 1 && args[1] == "init" {
-        print_zsh_integration();
+        print_shell_integration();
         return;
     }
 
     // Check if the 'install' command is provided
     if args.len() > 1 && args[1] == "install" {
-        if let Err(e) = install_zsh_integration() {
+        if let Err(e) = install_shell_integration() {
             eprintln!("Error during installation: {}", e);
             process::exit(1);
         }
@@ -25,7 +25,7 @@ fn main() {
 
     // Check for the '-d' flag and ensure a folder name is provided
     if args.len() < 3 || args[1] != "-d" {
-        eprintln!("Usage: mchdir -d <folder_name>");
+        eprintln!("Usage: mchdir init\n       mchdir install\n       mchdir -d <folder_name>");
         process::exit(1);
     }
 
@@ -50,34 +50,76 @@ fn main() {
     }
 }
 
-fn print_zsh_integration() {
+// Prints the appropriate integration code for the user's shell
+fn print_shell_integration() {
+    let shell = env::var("SHELL").unwrap_or_default();
+
+    if shell.contains("fish") {
+        print_fish_integration();
+    } else {
+        print_bash_zsh_integration();
+    }
+}
+
+// Prints the integration function for Bash/Zsh
+fn print_bash_zsh_integration() {
     println!(
         r#"
-# Add this function to your .zshrc for integration with folder_utility
+# Add this function to your shell configuration for integration with folder_utility
 mcd() {{
     local target_dir=$("mchdir" -d "$1")
 
     if [[ $? -eq 0 ]]; then
         cd "$target_dir"
     else
-        echo "Failed to create or change directory."
+        echo "Failed to change directory."
     fi
 }}
 "#
     );
 }
 
-fn install_zsh_integration() -> io::Result<()> {
-    let home_dir = env::var("HOME").expect("Could not find home directory");
-    let zshrc_path = Path::new(&home_dir).join(".zshrc");
+// Prints the integration function for Fish shell
+fn print_fish_integration() {
+    println!(
+        r#"
+# Add this function to your fish configuration for integration with folder_utility
+function mcd
+    set target_dir (mchdir -d $argv)
 
-    // Check if the integration is already present in .zshrc
-    if let Ok(file) = fs::File::open(&zshrc_path) {
+    if test $status -eq 0
+        cd $target_dir
+    else
+        echo "Failed to change directory."
+    end
+end
+"#
+    );
+}
+
+fn install_shell_integration() -> io::Result<()> {
+    let home_dir = env::var("HOME").expect("Could not find home directory");
+    let shell = env::var("SHELL").unwrap_or_default();
+
+    // Determine the correct config file based on the shell
+    let config_file = if shell.contains("fish") {
+        Path::new(&home_dir).join(".config/fish/config.fish")
+    } else if shell.contains("zsh") {
+        Path::new(&home_dir).join(".zshrc")
+    } else if shell.contains("bash") {
+        Path::new(&home_dir).join(".bashrc")
+    } else {
+        eprintln!("Unsupported shell. Only Bash, Zsh, and Fish are supported at this time.");
+        process::exit(1);
+    };
+
+    // Check if the integration is already present in the config file
+    if let Ok(file) = fs::File::open(&config_file) {
         let reader = BufReader::new(file);
         for line in reader.lines() {
             if let Ok(line_content) = line {
-                if line_content.contains("eval \"$(mchdir init)\"") {
-                    println!("Integration already exists in .zshrc.");
+                if line_content.contains("folder_utility init") {
+                    println!("Integration already exists in the config file.");
                     return Ok(());
                 }
             }
@@ -88,15 +130,26 @@ fn install_zsh_integration() -> io::Result<()> {
     let mut file = fs::OpenOptions::new()
         .append(true)
         .create(true)
-        .open(&zshrc_path)?;
+        .open(&config_file)?;
 
-    writeln!(
-        file,
-        "\n# The following line integrates the folder_utility into your shell\n\
-        eval \"$(mchdir init)\""
-    )?;
+    if shell.contains("fish") {
+        writeln!(
+            file,
+            "\n# The following function integrates mchdir into your shell (fish)\n\
+            eval (mchdir init)"
+        )?;
+    } else {
+        writeln!(
+            file,
+            "\n# Integrate 'mcd' into your shell (bash/zsh)\n\
+            eval \"$(mchdir init)\""
+        )?;
+    }
 
-    println!("Successfully added folder_utility integration to .zshrc.");
+    println!(
+        "Successfully added 'mcd' integration to {}.",
+        config_file.display()
+    );
     println!("Please restart your shell to apply the changes.");
     Ok(())
 }
