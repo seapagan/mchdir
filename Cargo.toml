@@ -1,6 +1,6 @@
 [package]
 name = "mchdir"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Grant Ramsay <seapagan@gmail.com>"]
 description = "Make and enter a directory in one command."
