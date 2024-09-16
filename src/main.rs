@@ -1,4 +1,5 @@
 use clap::{Parser, Subcommand};
+use rand::{distributions::Alphanumeric, Rng};
 use std::env;
 use std::fs;
 use std::io::{self, BufRead, BufReader, Write};
@@ -19,6 +20,10 @@ struct Cli {
     /// Folder name to create and change into
     #[arg(short = 'd', value_name = "FOLDER_NAME", hide = true)]
     folder_name: Option<String>,
+
+    /// Create a folder in the temporary directory
+    #[arg(short = 't', hide = true)]
+    temp_folder: bool,
 
     #[command(subcommand)]
     command: Option<Commands>,
@@ -50,22 +55,46 @@ fn main() {
                 }
             }
         }
-    } else if let Some(folder_name) = cli.folder_name {
-        let folder_path = Path::new(&folder_name);
+    } else {
+        let folder_path = if cli.temp_folder {
+            // Handle '-t' flag: create a folder in the system temporary directory
+            let mut temp_path = std::env::temp_dir();
+            if let Some(folder_name) = cli.folder_name {
+                temp_path.push(folder_name);
+            } else {
+                let random_name: String = rand::thread_rng()
+                    .sample_iter(&Alphanumeric)
+                    .take(8)
+                    .map(char::from)
+                    .collect();
+                temp_path.push(format!("mct-{}", random_name));
+            }
+            temp_path
+        } else if let Some(folder_name) = cli.folder_name {
+            // Handle '-d' flag: create a folder in the specified path
+            Path::new(&folder_name).to_path_buf()
+        } else {
+            eprintln!("Error: No folder name provided.");
+            process::exit(1);
+        };
 
-        // Check if the folder exists; if not, create it
+        // Create the folder if it doesn't exist
         if !folder_path.exists() {
-            if let Err(e) = fs::create_dir(folder_path) {
-                eprintln!("Error creating folder '{}': {}", folder_name, e);
+            if let Err(e) = fs::create_dir(&folder_path) {
+                eprintln!("Error creating folder '{}': {}", folder_path.display(), e);
                 process::exit(1);
             }
         }
 
         // Get the absolute path and output it
-        match fs::canonicalize(folder_path) {
+        match fs::canonicalize(&folder_path) {
             Ok(absolute_path) => println!("{}", absolute_path.display()),
             Err(e) => {
-                eprintln!("Error obtaining absolute path for '{}': {}", folder_name, e);
+                eprintln!(
+                    "Error obtaining absolute path for '{}': {}",
+                    folder_path.display(),
+                    e
+                );
                 process::exit(1);
             }
         }
@@ -87,16 +116,41 @@ fn print_shell_integration() {
 fn print_bash_zsh_integration() {
     println!(
         r#"
-# implements the 'mcd' function for changing directories
+# mcd() function - create and change directories
 mcd() {{
     if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
         echo "Usage: mcd <directory>"
-        echo "Creates a new directory and changes into it."
-        echo "If no directory is specified, changes to the home directory."
+        echo "  Creates a new directory and changes into it."
+        echo "  If no directory is specified, changes to the home directory."
     elif [ -z "$1" ]; then
         cd
     else
         mchdir_target_dir=$("mchdir" -d "$1")
+
+        if [ $? -eq 0 ]; then
+            cd "$mchdir_target_dir"
+        else
+            echo "Failed to change directory."
+        fi
+    fi
+}}
+
+# mct() function - create a directory in the system temp folder
+mct() {{
+    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+        echo "Usage: mct <directory>"
+        echo "  Creates a new directory in the system temporary directory and changes into it."
+        echo "  If no directory is specified, creates a random directory in the temp folder."
+    elif [ -z "$1" ]; then
+        mchdir_target_dir=$("mchdir" -t)
+
+        if [ $? -eq 0 ]; then
+            cd "$mchdir_target_dir"
+        else
+            echo "Failed to change directory."
+        fi
+    else
+        mchdir_target_dir=$("mchdir" -t -d "$1")
 
         if [ $? -eq 0 ]; then
             cd "$mchdir_target_dir"
@@ -113,16 +167,41 @@ mcd() {{
 fn print_fish_integration() {
     println!(
         r#"
-# implements the 'mcd' function for changing directories
+# mcd() function - create and change directories
 function mcd
     if test "$argv[1]" = "--help" -o "$argv[1]" = "-h"
         echo "Usage: mcd <directory>"
-        echo "Creates a new directory and changes into it."
-        echo "If no directory is specified, changes to the home directory."
+        echo "  Creates a new directory and changes into it."
+        echo "  If no directory is specified, changes to the home directory."
     else if test (count $argv) -eq 0
         cd
     else
         set target_dir (mchdir -d $argv)
+
+        if test $status -eq 0
+            cd $target_dir
+        else
+            echo "Failed to change directory."
+        end
+    end
+end
+
+# mct() function - create a directory in the system temp folder
+function mct
+    if test "$argv[1]" = "--help" -o "$argv[1]" = "-h"
+        echo "Usage: mct <directory>"
+        echo "  Creates a new directory in the system temporary directory and changes into it."
+        echo "  If no directory is specified, creates a random directory in the temp folder."
+    else if test (count $argv) -eq 0
+        set target_dir (mchdir -t)
+
+        if test $status -eq 0
+            cd $target_dir
+        else
+            echo "Failed to change directory."
+        end
+    else
+        set target_dir (mchdir -t -d $argv)
 
         if test $status -eq 0
             cd $target_dir
