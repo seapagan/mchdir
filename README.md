@@ -1,7 +1,9 @@
 # mchdir <!-- omit in toc -->
 
-A utility for creating a new folder then changing into it in one command, using
-Rust and shell integration.
+A utility for creating a new folder then changing into it in one command, or
+creating and changing into a temporary folder.
+
+Written in Rust and using shell integration.
 
 - [Description](#description)
   - [Why?](#why)
