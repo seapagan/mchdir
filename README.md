@@ -20,6 +20,7 @@ Rust and shell integration.
   - [Fully Manual Installation](#fully-manual-installation)
 - [Usage](#usage)
   - [`mcd` Command](#mcd-command)
+  - [`mct` Command](#mct-command)
   - [mchdir Command](#mchdir-command)
 - [License](#license)
 - [Contributing](#contributing)
@@ -54,6 +55,7 @@ of the shell that runs it without shell integration.
 ## Features
 
 - Create a new directory and change into it with a single command.
+- Create a new directory in the system temporary directory and change into it with the `mct` command.
 - Shell integration for bash, zsh, and fish shells as first-class citizens,
   while it should work in most POSIX-compliant shells too.
 - Supports automatic installation of shell integration scripts.
@@ -115,7 +117,7 @@ cargo install --git https://github.com/seapagan/mchdir.git
 
 ## Shell Integration
 
-To enable the mcd command in your shell, you need to integrate `mchdir` with
+To enable the mcd and mct commands in your shell, you need to integrate `mchdir` with
 your shell configuration.
 
 ### Automatic Installation
@@ -190,7 +192,7 @@ Generate the integration code:
 mchdir init
 ```
 
-This command will output the shell function definition for mcd. Copy the output
+This command will output the shell function definition for mcd and mct. Copy the output
 and paste it into your shell's configuration file.
 
 After pasting this code into your shell configuration command, restart your
@@ -203,8 +205,6 @@ again, unless you need to reinstall the shell integration. It DOES need to
 remain in your PATH for the shell integration to work however.
 
 ### `mcd` Command
-
-After integrating `mchdir` with your shell, you can use the mcd command:
 
 - Create a new directory and change into it:
 
@@ -230,6 +230,34 @@ Output:
 Usage: mcd <directory>
 Creates a new directory and changes into it.
 If no directory is specified, changes to the home directory.
+```
+
+### `mct` Command
+
+- Create a new directory in the system temporary directory and change into it:
+
+  ```terminal
+  mct my_temp_directory
+  ```
+
+- Create a truly random directory in the system temporary directory and change into it (when no argument is provided):
+
+  ```terminal
+  mct
+  ```
+
+- Display help for the `mct` command:
+
+  ```terminal
+  mct --help
+  ```
+
+Output:
+
+```terminal
+Usage: mct <directory>
+    Creates a new directory in the system temporary directory and changes into it.
+    If no directory is specified, creates a random directory in the temp folder.
 ```
 
 ### mchdir Command
