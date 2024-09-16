@@ -1,7 +1,5 @@
 # TODO
 
-- add a `tmd` command to create a new folder in the system temporary directory
-  and change into it.
 - add the ability to speficy the shell to generate integration code with the
   'install' or `init` command - e.g. `mchdir init zsh` which will override the
   automatic shell detection.
