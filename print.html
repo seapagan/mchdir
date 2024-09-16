@@ -185,6 +185,21 @@ in a single command. While similar functionality can be achieved with a shell
 script, this project serves as a demonstration of how to create a command-line
 tool in Rust with shell integration. Additionally, <code>mchdir</code> includes the <code>mct</code>
 command to create and enter directories in the system's temporary folder.</p>
+<h3 id="why"><a class="header" href="#why">Why?</a></h3>
+<p>I was getting tired of creating a new directory and then changing into it with
+two separate commands. I wanted a single command that could do both. I wrote a
+utility to do this decades ago on Windows, and I wanted the same functionality
+on Linux/macOS.</p>
+<p>It's true that you can do the same thing with a simple shell function or alias!
+However, this project is a demonstration of how to create a command-line tool in
+Rust that provides shell integration. It will also probably get more features in
+the future.</p>
+<h3 id="why-the-need-for-shell-integration-too"><a class="header" href="#why-the-need-for-shell-integration-too">Why the need for shell integration too?</a></h3>
+<p>It is impossible to change the current working directory of the parent process
+from a child process (i.e., a command). This is because each process has its own
+working directory, and changes to the working directory are not propagated to
+the parent process. Hence, the mcd command cannot change the working directory
+of the shell that runs it without shell integration.</p>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
 <li>Create a new directory and change into it with a single command.</li>
