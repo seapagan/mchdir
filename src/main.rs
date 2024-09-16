@@ -9,7 +9,7 @@ use std::process;
 /// A utility for managing and changing directories with shell integration.
 #[derive(Parser)]
 #[command(
-    version = "0.1.0",
+    version = env!("CARGO_PKG_VERSION"),
     author = "Grant Ramsay",
     about = "Set up the 'mcd' command to create and change directories in one step.",
     args_conflicts_with_subcommands = true,
