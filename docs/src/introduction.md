@@ -14,6 +14,26 @@ script, this project serves as a demonstration of how to create a command-line
 tool in Rust with shell integration. Additionally, `mchdir` includes the `mct`
 command to create and enter directories in the system's temporary folder.
 
+### Why?
+
+I was getting tired of creating a new directory and then changing into it with
+two separate commands. I wanted a single command that could do both. I wrote a
+utility to do this decades ago on Windows, and I wanted the same functionality
+on Linux/macOS.
+
+It's true that you can do the same thing with a simple shell function or alias!
+However, this project is a demonstration of how to create a command-line tool in
+Rust that provides shell integration. It will also probably get more features in
+the future.
+
+### Why the need for shell integration too?
+
+It is impossible to change the current working directory of the parent process
+from a child process (i.e., a command). This is because each process has its own
+working directory, and changes to the working directory are not propagated to
+the parent process. Hence, the mcd command cannot change the working directory
+of the shell that runs it without shell integration.
+
 ## Features
 
 - Create a new directory and change into it with a single command.
