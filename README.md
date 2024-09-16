@@ -34,6 +34,9 @@ directory and immediately change into it. It includes shell integration that
 defines an mcd command in your shell, simplifying directory creation and
 navigation.
 
+Documentation is available at
+[https://seapagan.github.io/mchdir/](https://seapagan.github.io/mchdir/).
+
 ### Why?
 
 I was getting tired of creating a new directory and then changing into it with

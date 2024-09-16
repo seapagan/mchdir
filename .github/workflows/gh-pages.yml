@@ -1,0 +1,30 @@
+name: Build Docs
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'docs/**' # only need this to run if changes to the actual docs
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install mdBook
+        run: cargo install mdbook
+
+      - name: Build the book
+        run: mdbook build docs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/book
+          publish_branch: gh-pages
