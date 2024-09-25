@@ -1,8 +1,9 @@
 
 # Installation
 
-To install `mchdir`, you can use crates.io, build it from source, or install it
-directly from GitHub.
+In the future, there will be pre-built binaries available for download, but for
+now you can use crates.io, build it from source, or install it directly from
+GitHub.
 
 ## Prerequisites
 

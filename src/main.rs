@@ -11,7 +11,7 @@ use std::process;
 #[command(
     version = env!("CARGO_PKG_VERSION"),
     author = "Grant Ramsay",
-    about = "Set up the 'mcd' command to create and change directories in one step.",
+    about = "Set up the 'mcd' suite of commands to create and change directories in one step.",
     args_conflicts_with_subcommands = true,
     arg_required_else_help = true,
     override_usage = "mchdir [COMMAND]"
@@ -24,6 +24,10 @@ struct Cli {
     /// Create a folder in the temporary directory
     #[arg(short = 't', hide = true)]
     temp_folder: bool,
+
+    /// Output the last folder the shell changed to
+    #[arg(short = 'l', hide = true)]
+    last_folder: bool,
 
     #[command(subcommand)]
     command: Option<Commands>,
@@ -56,6 +60,13 @@ fn main() {
             }
         }
     } else {
+        if cli.last_folder {
+            // Handle '-l' flag: output the last folder the shell changed to
+            if let Ok(last_folder) = env::var("OLDPWD") {
+                println!("{}", last_folder);
+            }
+            return;
+        }
         let folder_path = if cli.temp_folder {
             // Handle '-t' flag: create a folder in the system temporary directory
             let mut temp_path = std::env::temp_dir();
@@ -159,6 +170,22 @@ mct() {{
         fi
     fi
 }}
+
+# mcl() function - change to the previous shell folder
+mcl() {{
+    if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+        echo "Usage: mcl"
+        echo "  Changes to the previous directory the shell was in."
+    else
+        mchdir_target_dir=$("mchdir" -l)
+
+        if [ $? -eq 0 ]; then
+            cd "$mchdir_target_dir"
+        else
+            echo "Failed to change directory."
+        fi
+    fi
+}}
 "#
     );
 }
@@ -202,6 +229,22 @@ function mct
         end
     else
         set target_dir (mchdir -t -d $argv)
+
+        if test $status -eq 0
+            cd $target_dir
+        else
+            echo "Failed to change directory."
+        end
+    end
+end
+
+# mcl() function - change to the previous shell folder
+function mcl
+    if test "$argv[1]" = "--help" -o "$argv[1]" = "-h"
+        echo "Usage: mcl"
+        echo "  Changes to the previous directory the shell was in."
+    else
+        set target_dir (mchdir -l)
 
         if test $status -eq 0
             cd $target_dir

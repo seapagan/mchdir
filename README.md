@@ -1,7 +1,8 @@
 # mchdir <!-- omit in toc -->
 
-A utility for creating a new folder then changing into it in one command, or
-creating and changing into a temporary folder.
+A utility for creating a new folder then changing into it in one command,
+changing to the last remembered directory or creating and changing into a
+temporary folder.
 
 Written in Rust and using shell integration.
 
@@ -23,6 +24,7 @@ Written in Rust and using shell integration.
 - [Usage](#usage)
   - [`mcd` Command](#mcd-command)
   - [`mct` Command](#mct-command)
+  - [`mcl` Command](#mcl-command)
   - [mchdir Command](#mchdir-command)
 - [License](#license)
 - [Contributing](#contributing)
@@ -31,8 +33,8 @@ Written in Rust and using shell integration.
 
 `mchdir` is a command-line tool written in Rust that allows you to create a new
 directory and immediately change into it. It includes shell integration that
-defines an mcd command in your shell, simplifying directory creation and
-navigation.
+defines an a couple of helpful commands in your shell, simplifying directory
+creation and navigation.
 
 Documentation is available at
 [https://seapagan.github.io/mchdir/](https://seapagan.github.io/mchdir/).
@@ -46,8 +48,8 @@ on Linux/macOS.
 
 It's true that you can do the same thing with a simple shell function or alias!
 However, this project is a demonstration of how to create a command-line tool in
-Rust that provides shell integration. It will also probably get more features in
-the future.
+Rust that provides (and installs!) shell integration. It will also probably get
+more features in the future.
 
 ### Why the need for shell integration too?
 
@@ -59,10 +61,12 @@ of the shell that runs it without shell integration.
 
 ## Features
 
-- Create a new directory and change into it with a single command.
-- Create a new directory in the system temporary directory and change into it with the `mct` command.
+- Create a new directory and change into it with a single command (`mcd`).
+- Create a new directory in the system temporary directory and change into it
+  with the `mct` command.
+- Change back to the last directory with the `mcl` command.
 - Shell integration for bash, zsh, and fish shells as first-class citizens,
-  while it should work in most POSIX-compliant shells too.
+  though it should work in most POSIX-compliant shells too.
 - Supports automatic installation of shell integration scripts.
 
 ## Installation
@@ -122,8 +126,8 @@ cargo install --git https://github.com/seapagan/mchdir.git
 
 ## Shell Integration
 
-To enable the mcd and mct commands in your shell, you need to integrate `mchdir` with
-your shell configuration.
+To enable the `mcd`, `mcl` and `mct` commands in your shell, you need to
+integrate `mchdir` with your shell configuration.
 
 ### Automatic Installation
 
@@ -245,7 +249,8 @@ If no directory is specified, changes to the home directory.
   mct my_temp_directory
   ```
 
-- Create a truly random directory in the system temporary directory and change into it (when no argument is provided):
+- Create a truly random directory in the system temporary directory and change
+  into it (when no argument is provided):
 
   ```terminal
   mct
@@ -264,6 +269,20 @@ Usage: mct <directory>
     Creates a new directory in the system temporary directory and changes into it.
     If no directory is specified, creates a random directory in the temp folder.
 ```
+
+### `mcl` Command
+
+- Changes to the previous directory the shell was in:
+
+  ```terminal
+  mcl
+  ```
+
+- Display help for the `mcl` command:
+
+  ```terminal
+  mcl --help
+  ```
 
 ### mchdir Command
 

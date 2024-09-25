@@ -31,7 +31,8 @@ After installing `mchdir`, use the following commands:
   mct my_temp_directory
   ```
 
-- Create a truly random directory in the system temporary directory:
+- Create a truly random directory in the system temporary directory and change
+  into it:
 
   ```bash
   mct
@@ -41,6 +42,20 @@ After installing `mchdir`, use the following commands:
 
   ```bash
   mct --help
+  ```
+
+## `mcl` Command
+
+- Changes to the previous directory the shell was in:
+
+  ```terminal
+  mcl
+  ```
+
+- Display help for the `mcl` command:
+
+  ```terminal
+  mcl --help
   ```
 
 ## `mchdir` Command
