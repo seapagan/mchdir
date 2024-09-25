@@ -1,8 +1,8 @@
 
 # Shell Integration
 
-To enable the `mcd` and `mct` commands in your shell, you need to integrate
-`mchdir` with your shell configuration.
+To enable the `mcd`, `mcl` and `mct` commands in your shell, you need to
+integrate `mchdir` with your shell configuration.
 
 ## Automatic Installation
 
@@ -37,3 +37,7 @@ Add the following code to your `~/.config/fish/config.fish` file:
 ```bash
 eval (mchdir init)
 ```
+
+> Note that after shell integration, you should no longer need to run the
+> `mchdir` command again, unless you need to reinstall the shell integration. It
+> DOES need to remain in your PATH for the shell integration to work however.

@@ -33,7 +33,7 @@ Written in Rust and using shell integration.
 
 `mchdir` is a command-line tool written in Rust that allows you to create a new
 directory and immediately change into it. It includes shell integration that
-defines an a couple of helpfull commands in your shell, simplifying directory
+defines an a couple of helpful commands in your shell, simplifying directory
 creation and navigation.
 
 Documentation is available at
@@ -61,7 +61,7 @@ of the shell that runs it without shell integration.
 
 ## Features
 
-- Create a new directory and change into it with a single command.
+- Create a new directory and change into it with a single command (`mcd`).
 - Create a new directory in the system temporary directory and change into it
   with the `mct` command.
 - Change back to the last directory with the `mcl` command.
@@ -126,8 +126,8 @@ cargo install --git https://github.com/seapagan/mchdir.git
 
 ## Shell Integration
 
-To enable the mcd and mct commands in your shell, you need to integrate `mchdir` with
-your shell configuration.
+To enable the `mcd`, `mcl` and `mct` commands in your shell, you need to
+integrate `mchdir` with your shell configuration.
 
 ### Automatic Installation
 
@@ -249,7 +249,8 @@ If no directory is specified, changes to the home directory.
   mct my_temp_directory
   ```
 
-- Create a truly random directory in the system temporary directory and change into it (when no argument is provided):
+- Create a truly random directory in the system temporary directory and change
+  into it (when no argument is provided):
 
   ```terminal
   mct
@@ -282,13 +283,6 @@ Usage: mct <directory>
   ```terminal
   mcl --help
   ```
-
-Output:
-
-```terminal
-Usage: mcl
-  Changes to the previous directory the shell was in.
-```
 
 ### mchdir Command
 

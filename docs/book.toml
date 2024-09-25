@@ -9,4 +9,4 @@ title = "Mchdir Documentation"
 create-missing = true
 
 [output.html]
-default-theme = "light"
+default-theme = "rust"
