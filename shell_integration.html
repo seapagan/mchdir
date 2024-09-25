@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
+<html lang="en" class="rust" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -36,7 +36,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -61,7 +61,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('light')
+            html.classList.remove('rust')
             html.classList.add(theme);
             var body = document.querySelector('body');
             body.classList.remove('no-js')
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="shell_integration.html" class="active"><strong aria-hidden="true">2.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="license.html"><strong aria-hidden="true">4.</strong> License</a></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="shell_integration.html" class="active"><strong aria-hidden="true">2.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="license.html"><strong aria-hidden="true">4.</strong> License</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,8 +174,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="shell-integration"><a class="header" href="#shell-integration">Shell Integration</a></h1>
-<p>To enable the <code>mcd</code> and <code>mct</code> commands in your shell, you need to integrate
-<code>mchdir</code> with your shell configuration.</p>
+<p>To enable the <code>mcd</code>, <code>mcl</code> and <code>mct</code> commands in your shell, you need to
+integrate <code>mchdir</code> with your shell configuration.</p>
 <h2 id="automatic-installation"><a class="header" href="#automatic-installation">Automatic Installation</a></h2>
 <p>You can automatically install the shell integration by running:</p>
 <pre><code class="language-bash">mchdir install
@@ -195,6 +195,11 @@ integration code to your shell configuration file.</p>
 <p>Add the following code to your <code>~/.config/fish/config.fish</code> file:</p>
 <pre><code class="language-bash">eval (mchdir init)
 </code></pre>
+<blockquote>
+<p>Note that after shell integration, you should no longer need to run the
+<code>mchdir</code> command again, unless you need to reinstall the shell integration. It
+DOES need to remain in your PATH for the shell integration to work however.</p>
+</blockquote>
 
                     </main>
 

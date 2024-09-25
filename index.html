@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
+<html lang="en" class="rust" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -36,7 +36,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -61,7 +61,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('light')
+            html.classList.remove('rust')
             html.classList.add(theme);
             var body = document.querySelector('body');
             body.classList.remove('no-js')
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html" class="active">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="shell_integration.html"><strong aria-hidden="true">2.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="license.html"><strong aria-hidden="true">4.</strong> License</a></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html" class="active">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="shell_integration.html"><strong aria-hidden="true">2.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="license.html"><strong aria-hidden="true">4.</strong> License</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -176,8 +176,8 @@
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p><code>mchdir</code> is a command-line tool written in Rust that allows you to create a new
 directory and immediately change into it. It includes shell integration that
-defines an <code>mcd</code> command in your shell, simplifying directory creation and
-navigation.</p>
+defines an a couple of helpful commands in your shell, simplifying directory
+creation and navigation.</p>
 <h2 id="description"><a class="header" href="#description">Description</a></h2>
 <p><code>mchdir</code> provides a convenient way to create a new directory and change into it
 in a single command. While similar functionality can be achieved with a shell
@@ -201,12 +201,17 @@ the parent process. Hence, the mcd command cannot change the working directory
 of the shell that runs it without shell integration.</p>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
-<li>Create a new directory and change into it with a single command.</li>
+<li>Create a new directory and change into it with a single command (<code>mcd</code>).</li>
 <li>Create a new directory in the system temporary directory and change into it
 with the <code>mct</code> command.</li>
-<li>Shell integration for bash, zsh, and fish shells.</li>
+<li>Change back to the last directory with the <code>mcl</code> command.</li>
+<li>Shell integration for bash, zsh, and fish shells as first-class citizens,
+though it should work in most POSIX-compliant shells too.</li>
 <li>Supports automatic installation of shell integration scripts.</li>
 </ul>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Contributions are welcome! Please open an issue or submit a pull request on
+GitHub.</p>
 
                     </main>
 

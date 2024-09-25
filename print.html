@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
+<html lang="en" class="rust" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -37,7 +37,7 @@
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "rust";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -62,7 +62,7 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('light')
+            html.classList.remove('rust')
             html.classList.add(theme);
             var body = document.querySelector('body');
             body.classList.remove('no-js')
@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="shell_integration.html"><strong aria-hidden="true">2.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="license.html"><strong aria-hidden="true">4.</strong> License</a></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">5.</strong> Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">1.</strong> Installation</a></li><li class="chapter-item expanded "><a href="shell_integration.html"><strong aria-hidden="true">2.</strong> Shell Integration</a></li><li class="chapter-item expanded "><a href="usage.html"><strong aria-hidden="true">3.</strong> Usage</a></li><li class="chapter-item expanded "><a href="license.html"><strong aria-hidden="true">4.</strong> License</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -177,8 +177,8 @@
                         <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
 <p><code>mchdir</code> is a command-line tool written in Rust that allows you to create a new
 directory and immediately change into it. It includes shell integration that
-defines an <code>mcd</code> command in your shell, simplifying directory creation and
-navigation.</p>
+defines an a couple of helpful commands in your shell, simplifying directory
+creation and navigation.</p>
 <h2 id="description"><a class="header" href="#description">Description</a></h2>
 <p><code>mchdir</code> provides a convenient way to create a new directory and change into it
 in a single command. While similar functionality can be achieved with a shell
@@ -202,15 +202,21 @@ the parent process. Hence, the mcd command cannot change the working directory
 of the shell that runs it without shell integration.</p>
 <h2 id="features"><a class="header" href="#features">Features</a></h2>
 <ul>
-<li>Create a new directory and change into it with a single command.</li>
+<li>Create a new directory and change into it with a single command (<code>mcd</code>).</li>
 <li>Create a new directory in the system temporary directory and change into it
 with the <code>mct</code> command.</li>
-<li>Shell integration for bash, zsh, and fish shells.</li>
+<li>Change back to the last directory with the <code>mcl</code> command.</li>
+<li>Shell integration for bash, zsh, and fish shells as first-class citizens,
+though it should work in most POSIX-compliant shells too.</li>
 <li>Supports automatic installation of shell integration scripts.</li>
 </ul>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Contributions are welcome! Please open an issue or submit a pull request on
+GitHub.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
-<p>To install <code>mchdir</code>, you can use crates.io, build it from source, or install it
-directly from GitHub.</p>
+<p>In the future, there will be pre-built binaries available for download, but for
+now you can use crates.io, build it from source, or install it directly from
+GitHub.</p>
 <h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
 <ul>
 <li>Rust programming language (for building from source)</li>
@@ -244,8 +250,8 @@ following command:</p>
 commands. See the <a href="shell_integration.html">Shell Integration</a> documentation (next)
 for more information.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="shell-integration"><a class="header" href="#shell-integration">Shell Integration</a></h1>
-<p>To enable the <code>mcd</code> and <code>mct</code> commands in your shell, you need to integrate
-<code>mchdir</code> with your shell configuration.</p>
+<p>To enable the <code>mcd</code>, <code>mcl</code> and <code>mct</code> commands in your shell, you need to
+integrate <code>mchdir</code> with your shell configuration.</p>
 <h2 id="automatic-installation"><a class="header" href="#automatic-installation">Automatic Installation</a></h2>
 <p>You can automatically install the shell integration by running:</p>
 <pre><code class="language-bash">mchdir install
@@ -265,6 +271,11 @@ integration code to your shell configuration file.</p>
 <p>Add the following code to your <code>~/.config/fish/config.fish</code> file:</p>
 <pre><code class="language-bash">eval (mchdir init)
 </code></pre>
+<blockquote>
+<p>Note that after shell integration, you should no longer need to run the
+<code>mchdir</code> command again, unless you need to reinstall the shell integration. It
+DOES need to remain in your PATH for the shell integration to work however.</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="usage"><a class="header" href="#usage">Usage</a></h1>
 <p>After installing <code>mchdir</code>, use the following commands:</p>
 <h2 id="mcd-command"><a class="header" href="#mcd-command"><code>mcd</code> Command</a></h2>
@@ -293,13 +304,27 @@ integration code to your shell configuration file.</p>
 </code></pre>
 </li>
 <li>
-<p>Create a truly random directory in the system temporary directory:</p>
+<p>Create a truly random directory in the system temporary directory and change
+into it:</p>
 <pre><code class="language-bash">mct
 </code></pre>
 </li>
 <li>
 <p>Display help for the <code>mct</code> command:</p>
 <pre><code class="language-bash">mct --help
+</code></pre>
+</li>
+</ul>
+<h2 id="mcl-command"><a class="header" href="#mcl-command"><code>mcl</code> Command</a></h2>
+<ul>
+<li>
+<p>Changes to the previous directory the shell was in:</p>
+<pre><code class="language-terminal">mcl
+</code></pre>
+</li>
+<li>
+<p>Display help for the <code>mcl</code> command:</p>
+<pre><code class="language-terminal">mcl --help
 </code></pre>
 </li>
 </ul>
@@ -339,9 +364,6 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 OR OTHER DEALINGS IN THE SOFTWARE.
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
-<p>Contributions are welcome! Please open an issue or submit a pull request on
-GitHub.</p>
 
                     </main>
 
