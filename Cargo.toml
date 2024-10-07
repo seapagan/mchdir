@@ -16,5 +16,5 @@ categories = ["command-line-utilities", "filesystem"]
 os = ["linux", "macos"]
 
 [dependencies]
-clap = { version = "4.5.18", features = ["derive"] }
+clap = { version = "4.5.19", features = ["derive"] }
 rand = "0.8.5"
